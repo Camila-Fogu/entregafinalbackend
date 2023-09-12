@@ -7,58 +7,6 @@ export default class ProductManager {
     this.path = filePath;
   }
 
-  addProduct(product) {
-    if (
-      !product.title ||
-      !product.description ||
-      !product.price ||
-      !product.thumbnail ||
-      !product.code ||
-      !product.stock
-    ) {
-      console.log("Todos los campos son obligatorios");
-      return;
-    }
-
-    const existingProduct = this.products.find(
-      (existingProduct) => existingProduct.code === product.code
-    );
-    if (existingProduct) {
-      console.log("El codigo del producto ya existe");
-      return;
-    }
-
-    const newproduct = {
-      ...product,
-      id: this.nextId,
-    };
-    this.products.push(newproduct);
-    this.nextId++;
-    fs.writeFileSync(this.path, JSON.stringify(this.products), "utf8");
-
-    console.log("Producto agregado:", newproduct);
-  }
-
-  getProducts() {
-    const data = fs.readFileSync(this.path, "utf8");
-    this.products = JSON.parse(data);
-    return this.products;
-  }
-
-  getProductById(id) {
-    const data = fs.readFileSync(this.path, "utf8");
-    this.products = JSON.parse(data);
-    const product = this.products.find(
-      (existingProduct) => existingProduct.id === id
-    );
-    if (product) {
-      return product;
-    } else {
-      console.log("Product not found: ", id);
-      return null;
-    }
-  }
-
   updateProduct(id, updatedFields) {
     const data = fs.readFileSync(this.path, "utf8");
     this.products = JSON.parse(data);
